@@ -1,0 +1,4 @@
+[MESSAGES CONTROL]
+disable=C0321
+[FORMAT]
+max-line-length=240

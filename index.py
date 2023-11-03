@@ -8,16 +8,20 @@ def get_args():
     Get program arguments specified by the user
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--a', '--analysis', action=argparse.BooleanOptionalAction, help='whether the GCN analysis should be output')
+    parser.add_argument('--a', '--analysis', action=argparse.BooleanOptionalAction, help=
+                        '''
+                        whether the GCN analysis should be output
+                        ''')
     parser.add_argument('-t', '--threshold', type=float, default=.75, help=
                         '''
-                        correlation threshold. It determines whether two genes are 
+                        correlation threshold. It determines whether two genes are
                         connected or not based on its correlation value
                         ''')
     
     requiredNamedArgs = parser.add_argument_group('required named arguments')
     requiredNamedArgs.add_argument('-i', '--input', type=str, required=True, help='Input csv file with coexpression data')
-    requiredNamedArgs.add_argument('-cr', '--correlation', type=str, choices=['pearson', 'distance', 'sdistance', 'rdc'], required=True, help='Correlation measure to use')
+    requiredNamedArgs.add_argument('-cr', '--correlation', type=str, choices=['pearson', 'distance', 'sdistance', 'rdc'], 
+                                   required=True, help='Correlation measure to use')
 
     args = parser.parse_args()
 
