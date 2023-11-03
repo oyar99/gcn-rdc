@@ -15,6 +15,12 @@ def distance_correlation(M: list[list[float]]) -> list[list[float]]:
     '''
     return correlation(M, distance.correlationM)
 
+def signed_distance_correlation(M: list[list[float]]) -> list[list[float]]:
+    '''
+    Computes signed distance correlation between every pair of rows of a given mxn matrix in O(m^2n^2)
+    '''
+    return correlation(M, distance.signedCorrelationM)
+
 def rdc_correlation(M: list[list[float]]) -> list[list[float]]:
     '''
     Computes randomized dependence coefficient between every pair of rows of a given mxn matrix in O(m^2nlgn)

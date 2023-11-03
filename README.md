@@ -91,9 +91,9 @@ python .\index.py --input dataset/sample.csv --correlation pearson --analysis
 The program receives the following required parameters:
 
 - `--input` This should be the path of the gene expression matrix as a csv file
-- `--correlation` This should be one of these values (pearson, distance, rdc) which determines the correlation measure to use
+- `--correlation` This should be one of these values `pearson`, `distance`, `sdistance` or `rdc` which determines the correlation measure to use
 
 Other optional parameters are
 
 - `--analysis` will output a set of files that can be used for further analysis. See results section for more details.
-- `threshold` can be used to change the value used to determine whether two genes are connected. It should be a value between 0 and 1.
+- `--threshold` can be used to change the value used to determine whether two genes are connected. It should be a value between 0 and 1.

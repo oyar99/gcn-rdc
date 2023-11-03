@@ -1,3 +1,5 @@
+import src.coexpression.pearson.pearson as pearson
+
 def pairwise_distances(X: list[float]) -> list[list[float]]:
     n = len(X)
 
@@ -67,8 +69,22 @@ def correlation(DX: list[list[float]], DY: list[list[float]], dvx: float, dvy: f
     '''
     Computes the distance correlation between vectors X and Y of length n in O(n^2) time
     '''
-    n = len(DX)
     return (distance_covariance(DX, DY)/((dvx ** .5) * (dvy ** .5))) ** .5
+
+def signedCorrelationM(M: list[list[float]]) -> float:
+    '''
+    Computes the signed distance correlation between all vectors M[i] and M[j] of length n in O(m^2n^2) time for matrix M of size mxn
+    '''
+    m = len(M)
+
+    CD = correlationM(M)
+    CP = pearson.correlationM(M)
+
+    for i in range(m):
+        for j in range(m):
+            CD[i][j] = CD[i][j] * (-1 if CP[i][j] < 0 else 1)
+
+    return CD
 
 def correlationM(M: list[list[float]]) -> float:
     '''
@@ -94,7 +110,6 @@ def correlationM(M: list[list[float]]) -> float:
             elif i == j:
                 C[i][j] = 1.0
             else:
-                C[i][j] = correlation(D[i], D[j], V[i], V[j])
-                # C[i][j] = round(correlation(D[i], D[j], V[i], V[j]), 4)
+                C[i][j] = round(correlation(D[i], D[j], V[i], V[j]), 4)
 
     return C
