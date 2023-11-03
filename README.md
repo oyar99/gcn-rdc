@@ -20,16 +20,13 @@ This software was implemented with [Python 3.9](https://www.python.org/downloads
 
 The `dataset` folder contains the following resources.
 
-- `sample.csv` A sample random gene expression matrix of small size.
-
-- `LiverFemale3600.csv` A microarray result for a gene expression experiment on female mouse liver cells.
+- `sample.csv` A sample random gene expression matrix of small size
 
 ## Results
 
-Results are placed in the `results` folder. For each dataset, there will be some set of files
-prefixed with the dataset name followed by an underscore and the output file name.
+Results are placed in the `results` folder. For each dataset, there will be another folder containing all the following files.
 
-- `correlation.csv` This file contains the Pearson correlation matrix using up to 4 decimal places
+- `correlation.csv` This file contains the correlation matrix using the specified correlation measure
 
 - `network.csv` This file contains the network information. Each line has 2 columns that indicate gene $G_i$ is adjacent to $G_j$. This file can be used as input in other bioinformatics tools such as `Cytoscape` to visualize the graph.
 
@@ -37,7 +34,7 @@ prefixed with the dataset name followed by an underscore and the output file nam
 
 - `degree_dist.csv` This file contains the degree distribution for the network. Each line has two numbers $a$ and $b$. This means there are $b$ nodes whose degree is $a$.
 
-- `density.txt` This file contains the a line describing the density of the graph.
+- `density.txt` This file contains a line describing the density of the graph.
 
 - `clustering_coeff.csv` This file contains the clustering coefficient for each gene.
 
@@ -88,13 +85,15 @@ pip install -r requirements.txt
 - Run the program
 
 ```sh
-python .\index.py --input dataset/sample.csv --correlation --analysis
+python .\index.py --input dataset/sample.csv --correlation pearson --analysis
 ```
 
-The program receives a required parameter `--input`. This should be the path of the gene expression matrix.
+The program receives the following required parameters:
+
+- `--input` This should be the path of the gene expression matrix as a csv file
+- `--correlation` This should be one of these values (pearson, distance, rdc) which determines the correlation measure to use
 
 Other optional parameters are
 
-- `--correlation` will output the correlation matrix.
 - `--analysis` will output a set of files that can be used for further analysis. See results section for more details.
 - `threshold` can be used to change the value used to determine whether two genes are connected. It should be a value between 0 and 1.

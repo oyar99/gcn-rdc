@@ -1,48 +1,27 @@
-def mean(x: list[float]) -> float:
-    sum = .0
+from typing import Callable
+import src.coexpression.pearson as pearson
+import src.coexpression.distance as distance
+import src.coexpression.rdc as rdc
 
-    for xi in x:
-        sum = sum + xi
+def pearson_correlation(M: list[list[float]]) -> list[list[float]]:
+    '''
+    Computes pearson correlation between every pair of rows of a given mxn matrix in O(m^2n)
+    '''
+    correlation(M, pearson.correlation)
 
-    return sum/len(x)
+def distance_correlation(M: list[list[float]]) -> list[list[float]]:
+    '''
+    Computes distance correlation between every pair of rows of a given mxn matrix in O(m^2n^2)
+    '''
+    correlation(M, distance.correlation)
 
-def covariance(x: list[float], y: list[float]) -> float:
-    if (len(x) != len(y)):
-        return .0
-    
-    n = len(x)
+def rdc_correlation(M: list[list[float]]) -> list[list[float]]:
+    '''
+    Computes randomized dependence coefficient between every pair of rows of a given mxn matrix in O(m^2nlgn)
+    '''
+    correlation(M, rdc.correlation)
 
-    # compute the mean for each variable
-    meanX = mean(x)
-    meanY = mean(y)
-
-    s = .0
-
-    for i in range(n):
-        s = s + ((x[i] - meanX) * (y[i] - meanY))
-
-    return s/(n-1)
-
-def std(x: list[float]) -> float:
-    n = len(x)
-
-    # compute the mean for x
-    meanX = mean(x)
-
-    s = .0
-
-    for xi in x:
-        s = s + ((xi - meanX) * (xi - meanX))
-
-    return (s/(n-1)) ** .5
-
-def pearsonCorrelation(x: list[float], y: list[float], stdX: float, stdY: float) -> float:
-    if (len(x) != len(y)):
-        return .0
-
-    return covariance(x, y)/(stdX * stdY)
-
-def correlationM(M: list[list[float]]) -> list[list[float]]:
+def correlation(M: list[list[float]], f: Callable[[list[float], list[float]], float]) -> list[list[float]]:
     '''
     Transforms a coexpression matrix M of size mxn into a correlation matrix M' of size mxm.
 
@@ -53,20 +32,15 @@ def correlationM(M: list[list[float]]) -> list[list[float]]:
     if m <= 0:
         return [[]]
 
-    CM = [[0 for _ in range(m)] for _ in range(m)]
-
-    std_T = [0 for _ in range(m)]
-
-    for i in range(m):
-        std_T[i] = std(M[i])
+    C = [[0 for _ in range(m)] for _ in range(m)]
 
     for i in range(m):
         for j in range(m):
             if j < i:
-                CM[i][j] = CM[j][i]
+                C[i][j] = C[j][i]
             elif i == j:
-                CM[i][j] = 1.0
+                C[i][j] = 1.0
             else:
-                CM[i][j] = round(pearsonCorrelation(M[i], M[j], std_T[i], std_T[j]), 4)
+                C[i][j] = round(f(M[i], M[j]), 4)
 
-    return CM
+    return C
