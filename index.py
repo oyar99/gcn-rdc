@@ -17,10 +17,10 @@ def get_args():
                         correlation threshold. It determines whether two genes are
                         connected or not based on its correlation value
                         ''')
-    
+
     requiredNamedArgs = parser.add_argument_group('required named arguments')
     requiredNamedArgs.add_argument('-i', '--input', type=str, required=True, help='Input csv file with coexpression data')
-    requiredNamedArgs.add_argument('-cr', '--correlation', type=str, choices=['pearson', 'distance', 'sdistance', 'rdc'], 
+    requiredNamedArgs.add_argument('-cr', '--correlation', type=str, choices=['pearson', 'distance', 'sdistance', 'rdc'],
                                    required=True, help='Correlation measure to use')
 
     args = parser.parse_args()
@@ -37,8 +37,8 @@ def main():
     [M, genes] = utils.readCoexpressionFileAsCsv(args.input)
     corr = args.correlation
 
-    C = (coExp.pearson_correlation(M) if corr == 'pearson' else 
-         coExp.distance_correlation(M) if corr == 'distance' else 
+    C = (coExp.pearson_correlation(M) if corr == 'pearson' else
+         coExp.distance_correlation(M) if corr == 'distance' else
          coExp.signed_distance_correlation(M) if corr == 'sdistance' else
          coExp.rdc_correlation(M) if corr == 'rdc' else [])
 
