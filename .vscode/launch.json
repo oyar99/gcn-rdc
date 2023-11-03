@@ -9,7 +9,8 @@
             "args": [
                 "--input", 
                 "dataset/Sample.csv",
-                "--analysis"
+                "--correlation",
+                "pearson"
             ]
         }
     ]

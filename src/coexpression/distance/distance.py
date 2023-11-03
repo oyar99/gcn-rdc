@@ -1,4 +1,4 @@
-def pairwise_distance(X: list[float]) -> list[list[float]]:
+def pairwise_distances(X: list[float]) -> list[list[float]]:
     n = len(X)
 
     D = [[0 for _ in range(n)] for _ in range(n)]
@@ -9,7 +9,7 @@ def pairwise_distance(X: list[float]) -> list[list[float]]:
 
     return D
 
-def double_centering(X: list[list[float]]) -> list[list[float]]:
+def doubly_centered_distances(X: list[list[float]]) -> list[list[float]]:
     n = len(X)
 
     row_means = [0 for _ in range(n)]
@@ -42,23 +42,57 @@ def double_centering(X: list[list[float]]) -> list[list[float]]:
 
     return X
 
-def distance(X: list[float], Y: list[float]) -> list[list[float]]:
-    DX = pairwise_distance(X)
-    DY = pairwise_distance(Y)
+def distance_covariance(DX: list[list[float]], DY: list[list[float]]) -> float:
+    n = len(DX)
 
-    DX = double_centering(DX)
-    DY = double_centering(DY)
+    dcov2 = .0
 
-    
+    for i in range(n):
+        for j in range(n):
+            dcov2 = dcov2 + (DX[i][j] * DY[i][j])
 
+    return dcov2
 
+def distance_variance(DX: list[float]) -> float:
+    n = len(DX)
+    s = .0
 
+    for i in range(n):
+        for j in range(n):
+            s  = s + (DX[i][j] * DX[i][j])
 
-def correlation(x: list[float], y: list[float]) -> float:
+    return s
+
+def correlation(DX: list[list[float]], DY: list[list[float]], dvx: float, dvy: float) -> float:
     '''
     Computes the distance correlation between vectors X and Y of length n in O(n^2) time
     '''
-    if (len(x) != len(y)):
-        return .0
+    return (distance_covariance(DX, DY)/(dvx * dvy)) ** .5
 
-    return 0
+def correlationM(M: list[list[float]]) -> float:
+    '''
+    Computes the distance correlation between all vectors M[i] and M[j] of length n in O(m^2n^2) time for matrix M of size mxn
+    '''
+    m = len(M)
+
+    C = [[0 for _ in range(m)] for _ in range(m)]
+
+    # Pre-compute all doubly centered distances for all vectors M[i]
+    D = [[[] for _ in range(m)] for _ in range(m)]
+    # Pre-compute all distance variances for all vectors M[i]
+    V = [[0 for _ in range(m)] for _ in range(m)]
+
+    for i in range(m):
+        D[i] = doubly_centered_distances(pairwise_distances(M[i]))
+        V[i] = distance_variance(D[i])
+
+    for i in range(m):
+        for j in range(m):
+            if j < i:
+                C[i][j] = C[j][i]
+            elif i == j:
+                C[i][j] = 1.0
+            else:
+                C[i][j] = round(correlation(D[i], D[j], V[i], V[j]), 4)
+
+    return C

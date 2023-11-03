@@ -6,36 +6,56 @@ def mean(X: list[float]) -> float:
 
     return sum/len(X)
 
-def covariance(X: list[float], Y: list[float]) -> float:
+def covariance(X: list[float], Y: list[float], meanX: float, meanY: float) -> float:
     n = len(X)
-
-    meanX = mean(X)
-    meanY = mean(Y)
 
     s = .0
 
     for i in range(n):
         s = s + ((X[i] - meanX) * (Y[i] - meanY))
 
-    return s/(n-1)
+    return s
 
-def std(X: list[float]) -> float:
+def std(X: list[float], meanX: float) -> float:
     n = len(X)
-
-    meanX = mean(X)
 
     s = .0
 
     for x in X:
         s = s + ((x - meanX) * (x - meanX))
 
-    return (s/(n-1)) ** .5
+    return s ** .5
 
-def correlation(X: list[float], Y: list[float]) -> float:
+def correlation(X: list[float], Y: list[float], stdX: float, stdY: float, meanX: float, meanY: float) -> float:
     '''
     Computes the pearson correlation between vectors X and Y of length n in O(n) time
     '''
-    if (len(X) != len(Y)):
-        return .0
+    return covariance(X, Y, meanX, meanY)/(stdX * stdY)
 
-    return covariance(X, Y)/(std(X) * std(Y))
+def correlationM(M: list[list[float]]) -> list[list[float]]:
+    '''
+    Computes the pearson correlation between all vectors M[i] and M[j] of length n in O(m^2n) time for matrix M of size mxn
+    '''
+    m = len(M)
+
+    C = [[0 for _ in range(m)] for _ in range(m)]
+
+    # Pre-compute standard deviations for all vectors M[i]
+    S = [[0 for _ in range(m)] for _ in range(m)]
+    # Pre-compute means for all vectors M[i]
+    A = [[0 for _ in range(m)] for _ in range(m)]
+
+    for i in range(m):
+        A[i] = mean(M[i])
+        S[i] = std(M[i], A[i])
+
+    for i in range(m):
+        for j in range(m):
+            if j < i:
+                C[i][j] = C[j][i]
+            elif i == j:
+                C[i][j] = 1.0
+            else:
+                C[i][j] = round(correlation(M[i], M[j], S[i], S[j], A[i], A[j]), 4)
+
+    return C

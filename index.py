@@ -31,18 +31,11 @@ def main():
 
     # Read coexpression data and transform into matrix
     [M, genes] = utils.readCoexpressionFileAsCsv(args.input)
+    corr = args.correlation
 
-    if args.correlation == 'pearson':
-        # For every pair of genes, compute their pearson correlation
-        C = coExp.pearson_correlation(M)
-    elif args.correlation == 'distance':
-        # For every pair of genes, compute their distance correlation
-        C = coExp.distance_correlation(M)
-    elif args.correlation == 'rdc':
-        # For every pair of genes, compute their randomized dependence coefficient
-        C = coExp.rdc_correlation(M)
-    else:
-        raise RuntimeError('correlation measure not supported')
+    C = (coExp.pearson_correlation(M) if corr == 'pearson' else 
+         coExp.distance_correlation(M) if corr == 'distance' else 
+         coExp.rdc_correlation(M) if corr == 'rdc' else [])
 
     # Output the pearson correlation matrix with gene labels
     utils.saveMatrix(C, 'correlation.csv', labels=genes)
