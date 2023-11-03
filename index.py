@@ -8,7 +8,6 @@ def get_args():
     Get program arguments specified by the user
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--cr', '--correlation', action=argparse.BooleanOptionalAction, help='whether the correlation matrix should be output')
     parser.add_argument('--a', '--analysis', action=argparse.BooleanOptionalAction, help='whether the GCN analysis should be output')
     parser.add_argument('-t', '--threshold', type=float, default=.75, help=
                         '''
@@ -18,6 +17,7 @@ def get_args():
     
     requiredNamedArgs = parser.add_argument_group('required named arguments')
     requiredNamedArgs.add_argument('-i', '--input', type=str, required=True, help='Input csv file with coexpression data')
+    requiredNamedArgs.add_argument('-cr', '--correlation', type=str, choices=['pearson', 'distance', 'rdc'], required=True, help='Correlation measure to use')
 
     args = parser.parse_args()
 
@@ -30,16 +30,24 @@ def main():
     args = get_args()
 
     # Read coexpression data and transform into matrix
-    [expressionMatrix, genes] = utils.readCoexpressionFileAsCsv(args.input)
+    [M, genes] = utils.readCoexpressionFileAsCsv(args.input)
 
-    # For every pair of genes, compute their pearson correlation
-    corrMatrix = coExp.correlationM(expressionMatrix)
+    if args.correlation == 'pearson':
+        # For every pair of genes, compute their pearson correlation
+        C = coExp.pearson_correlation(M)
+    elif args.correlation == 'distance':
+        # For every pair of genes, compute their distance correlation
+        C = coExp.distance_correlation(M)
+    elif args.correlation == 'rdc':
+        # For every pair of genes, compute their randomized dependence coefficient
+        C = coExp.rdc_correlation(M)
+    else:
+        raise RuntimeError('correlation measure not supported')
 
-    if args.cr:
-        # Output the pearson correlation matrix with gene labels
-        utils.saveMatrix(corrMatrix, 'correlation.csv', labels=genes)
+    # Output the pearson correlation matrix with gene labels
+    utils.saveMatrix(C, 'correlation.csv', labels=genes)
 
-    network = gcn.GCN(corrMatrix, args.threshold)
+    network = gcn.GCN(C, args.threshold)
 
     # Serializes and outputs the network to a file where each row corresponds to an edge
     serializedNetwork = network.serialize(genes)
