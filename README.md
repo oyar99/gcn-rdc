@@ -10,9 +10,9 @@ We say two genes $g_i$ and $g_j$ are significantly coexpressed if the correlatio
 
 In practice, researchers use either Pearson correlation or Spearman correlation. However, these are limited to linear relationships. Javier Pardo-Diaz on its paper [Robust Gene Coexpression Networks Using Signed Distance Correlation](https://academic.oup.com/bioinformatics/article/37/14/1982/6125359?searchresult=1},%20author%20=%20{Javier%20Pardo-Diaz%20and%20Lyuba%20V%20Bozhilova%20and%20Mariano%20Beguerisse-D%C3%ADaz%20and%20Philip%20S%20Poole%20and%20Charlotte%20M%20Deane%20and%20Gesine%20Reinert) proposes the use of distance correlation to overcome this disadvantage since it measures the correlation between two variables for both linear and non-linear relationships.
 
-Given two vectors $X$ and $Y$ of length $m$, distance correlation between $X$ and $Y$ can be computed in $O(m^2)$ following its definition. This might be time-consuming for large experiments since building the network would take $O(n^2m^2)$.
+Given two vectors $X$ and $Y$ of length $n$, distance correlation between $X$ and $Y$ can be computed in $O(n^2)$ following its definition. This might be time-consuming for large experiments since building the network would take $O(m^2n^2)$.
 
-We present an implementation of _GCN_ construction based on [The Randomized Dependence Coefficient](https://arxiv.org/abs/1304.7717). This is a measure of non-linear dependence between two variables that can be computed in $O(mlgm)$ for vectors of length $m$. This reduces the time for building the network to $O(n^2mlgm)$ while still producing reliable biological results based on our analysis on real data.
+We present an implementation of _GCN_ construction based on [The Randomized Dependence Coefficient](https://arxiv.org/abs/1304.7717). This is a measure of non-linear dependence between two variables that can be computed in $O(nlgn)$ for vectors of length $n$. This reduces the time for building the network to $O(m^2nlgn)$ while still producing reliable biological results based on our analysis on real data.
 
 This software was implemented with [Python 3.9](https://www.python.org/downloads/release/python-390/).
 
