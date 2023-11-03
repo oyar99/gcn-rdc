@@ -67,7 +67,8 @@ def correlation(DX: list[list[float]], DY: list[list[float]], dvx: float, dvy: f
     '''
     Computes the distance correlation between vectors X and Y of length n in O(n^2) time
     '''
-    return (distance_covariance(DX, DY)/(dvx * dvy)) ** .5
+    n = len(DX)
+    return (distance_covariance(DX, DY)/((dvx ** .5) * (dvy ** .5))) ** .5
 
 def correlationM(M: list[list[float]]) -> float:
     '''
@@ -93,6 +94,7 @@ def correlationM(M: list[list[float]]) -> float:
             elif i == j:
                 C[i][j] = 1.0
             else:
-                C[i][j] = round(correlation(D[i], D[j], V[i], V[j]), 4)
+                C[i][j] = correlation(D[i], D[j], V[i], V[j])
+                # C[i][j] = round(correlation(D[i], D[j], V[i], V[j]), 4)
 
     return C
