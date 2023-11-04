@@ -5,17 +5,21 @@
         "coeff",
         "coexpressed",
         "Coexpression",
+        "corrs",
         "cytogenetic",
         "Cytoscape",
         "dcov",
         "Diaz",
         "microarray",
         "mlgm",
+        "mnlgn",
+        "mult",
         "nlgn",
         "Pardo",
         "Proteome",
         "sdistance",
         "usecols",
-        "venv"
+        "venv",
+        "wkxn"
     ]
 }
