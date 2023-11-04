@@ -1,6 +1,6 @@
 import pandas as pd
 
-def readCoexpressionFileAsCsv(filepath: str) -> [list[list[float]], list[str]]:
+def read_coexpression_file_as_csv(filepath: str) -> [list[list[float]], list[str]]:
     '''
     Reads a microarray csv file that contains expression data.
     Rows should correspond to genes and columns should have expression data for each gene.
@@ -25,16 +25,16 @@ def readCoexpressionFileAsCsv(filepath: str) -> [list[list[float]], list[str]]:
 
     return [M, genes]
 
-def saveFileContent(content: str, filepath: str) -> None:
+def save_file_content(content: str, filepath: str) -> None:
     with open(filepath, 'w') as f:
         print(content, file=f)
 
-def saveList(L: list[float], filepath: str, labels: list[str] = None) -> None:
+def save_list(L: list[float], filepath: str, labels: list[str] = None) -> None:
     df = pd.DataFrame(L, labels)
 
     df.to_csv(filepath, sep='\t', header=False)
 
-def saveMatrix(M: list[list[float]], filepath: str, labels: list[str] = None) -> None:
+def save_matrix(M: list[list[float]], filepath: str, labels: list[str] = None) -> None:
     df = pd.DataFrame(M, labels, labels)
 
     df.to_csv(filepath, sep='\t', index=labels != None, header=labels != None)

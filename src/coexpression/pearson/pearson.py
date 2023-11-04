@@ -17,8 +17,6 @@ def covariance(X: list[float], Y: list[float], meanX: float, meanY: float) -> fl
     return s
 
 def std(X: list[float], meanX: float) -> float:
-    n = len(X)
-
     s = .0
 
     for x in X:

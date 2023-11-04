@@ -34,7 +34,7 @@ def main():
     args = get_args()
 
     # Read coexpression data and transform into matrix
-    [M, genes] = utils.readCoexpressionFileAsCsv(args.input)
+    [M, genes] = utils.read_coexpression_file_as_csv(args.input)
     corr = args.correlation
 
     C = (coExp.pearson_correlation(M) if corr == 'pearson' else
@@ -43,13 +43,13 @@ def main():
          coExp.rdc_correlation(M) if corr == 'rdc' else [])
 
     # Output the pearson correlation matrix with gene labels
-    utils.saveMatrix(C, 'correlation.csv', labels=genes)
+    utils.save_matrix(C, 'correlation.csv', labels=genes)
 
     network = gcn.GCN(C, args.threshold)
 
     # Serializes and outputs the network to a file where each row corresponds to an edge
     serializedNetwork = network.serialize(genes)
-    utils.saveMatrix(serializedNetwork, 'network.csv')
+    utils.save_matrix(serializedNetwork, 'network.csv')
 
     if args.a:
         '''
@@ -57,23 +57,23 @@ def main():
         '''
         degrees = network.degrees()
 
-        utils.saveList(degrees, 'degrees.csv', labels=genes)
+        utils.save_list(degrees, 'degrees.csv', labels=genes)
 
         degrees_dist = network.degree_distribution()
 
-        utils.saveList(degrees_dist, 'degree_dist.csv')
+        utils.save_list(degrees_dist, 'degree_dist.csv')
 
         density = network.density()
 
-        utils.saveFileContent(f'Network Density: {density}', 'density.txt')
+        utils.save_file_content(f'Network Density: {density}', 'density.txt')
 
         clust_coeff = network.clustering_coefficient()
 
-        utils.saveList(clust_coeff, 'clustering_coeff.csv', labels=genes)
+        utils.save_list(clust_coeff, 'clustering_coeff.csv', labels=genes)
 
         spectral = network.spectral_clustering()
 
-        utils.saveList(spectral, 'spectral.csv')
+        utils.save_list(spectral, 'spectral.csv')
 
 if __name__ == "__main__":
     main()

@@ -10,7 +10,7 @@
                 "--input", 
                 "dataset/Sample.csv",
                 "--correlation",
-                "distance"
+                "rdc"
             ]
         }
     ]

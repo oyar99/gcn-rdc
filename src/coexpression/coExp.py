@@ -25,7 +25,7 @@ def rdc_correlation(M: list[list[float]]) -> list[list[float]]:
     '''
     Computes randomized dependence coefficient between every pair of rows of a given mxn matrix in O(m^2nlgn)
     '''
-    return correlation(M, rdc.correlation)
+    return correlation(M, rdc.correlationM)
 
 def correlation(M: list[list[float]], f: Callable[[list[list[float]]], float]) -> list[list[float]]:
     '''
