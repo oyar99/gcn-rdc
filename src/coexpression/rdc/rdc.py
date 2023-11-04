@@ -146,7 +146,7 @@ def correlation(X: list[float], Y: list[float], k: int, s: float) -> float:
 
     # Compute random non-linear projections of X and Y in O(nk) time which reduces to O(n) for small k
     fx = random_nonlinear_projections(X, k, s)
-    fy = random_nonlinear_projections(X, k, s)
+    fy = random_nonlinear_projections(Y, k, s)
 
     # Obtain the maximum correlation coefficients over the projections
     return canonical_correlation_analysis(fx, fy)
@@ -184,7 +184,7 @@ def correlationM(M: list[list[float]]) -> list[list[float]]:
             else:
                 corrs = [0 for _ in range(T)]
                 for k in range(T):
-                    corrs[k] = round(correlation(M[i], M[j], K, S), 4)
+                    corrs[k] = round(correlation(copulas[i], copulas[j], K, S), 4)
 
                 # Choose the median across all K runs
                 corrs.sort()
