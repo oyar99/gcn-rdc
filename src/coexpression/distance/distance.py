@@ -1,3 +1,4 @@
+import numpy as np
 import src.coexpression.pearson.pearson as pearson
 
 def pairwise_distances(X: list[float]) -> list[list[float]]:
@@ -113,3 +114,13 @@ def correlationM(M: list[list[float]]) -> float:
                 C[i][j] = round(correlation(D[i], D[j], V[i], V[j]), 4)
 
     return C
+
+'''
+Numpy Based Implementation
+'''
+
+def correlation_numpy(M: np.ndarray) -> np.ndarray:
+    pass
+
+def signed_correlation_numpy(M: np.ndarray) -> np.ndarray:
+    pass

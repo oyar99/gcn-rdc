@@ -203,3 +203,10 @@ def correlationM(M: list[list[float]]) -> list[list[float]]:
                 C[i][j] = corrs[int(T/2)] if T % 2 == 0 else corrs[int(T/2)] + corrs[int((T-1)/2)]
 
     return C
+
+'''
+Numpy Based Implementation
+'''
+
+def correlation_numpy(M: np.ndarray) -> np.ndarray:
+    pass

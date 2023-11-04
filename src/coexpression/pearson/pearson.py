@@ -1,3 +1,5 @@
+import numpy as np
+
 def mean(X: list[float]) -> float:
     sum = .0
 
@@ -57,3 +59,10 @@ def correlationM(M: list[list[float]]) -> list[list[float]]:
                 C[i][j] = round(correlation(M[i], M[j], S[i], S[j], A[i], A[j]), 4)
 
     return C
+
+'''
+Numpy Based Implementation
+'''
+
+def correlation_numpy(M: np.ndarray) -> np.ndarray:
+    pass
