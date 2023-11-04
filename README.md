@@ -12,7 +12,7 @@ In practice, researchers use either Pearson correlation or Spearman correlation.
 
 Given two vectors $X$ and $Y$ of length $n$, distance correlation between $X$ and $Y$ can be computed in $O(n^2)$ following its definition. This might be time-consuming for large experiments since building the network would take $O(m^2n^2)$.
 
-We present an implementation of _GCN_ construction based on [The Randomized Dependence Coefficient](https://arxiv.org/abs/1304.7717). This is a measure of non-linear dependence between two variables that can be computed in $O(nlgn)$ for vectors of length $n$. This reduces the time for building the network to $O(m^2nlgn)$ while still producing reliable biological results based on our analysis on real data.
+We present an implementation of _GCN_ construction based on [The Randomized Dependence Coefficient](https://arxiv.org/abs/1304.7717). This is a measure of non-linear dependence between two variables that can be computed in $O(nlgn)$ for vectors of length $n$. Since the time complexity is dominated by the computation of the copula-transformations discussed in the paper, we can pre-compute all transformations for all genes and obtain an algorithm of the order of  $O(mlgn+m^2n)$ for gene coexpression networks that captures as significant biological information as other methods based on our empirical experiments. 
 
 This software was implemented with [Python 3.9](https://www.python.org/downloads/release/python-390/).
 

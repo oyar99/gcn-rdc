@@ -136,6 +136,9 @@ def random_nonlinear_projections(A: list[float], k: int, s: float) -> list[list[
         apply_non_linear_function(XW_B, math.cos), 
         apply_non_linear_function(XW_B, math.sin), k)
 
+def canonical_correlation_analysis(X: list[list[float]], Y: list[list[float]]) -> float:
+    pass
+
 def correlation(X: list[float], Y: list[float], k: int, s: float) -> float:
     '''
     Computes the randomized dependance coefficient between vectors X and Y of length n in O(nlgn) time
@@ -145,9 +148,8 @@ def correlation(X: list[float], Y: list[float], k: int, s: float) -> float:
     fx = random_nonlinear_projections(X, k, s)
     fy = random_nonlinear_projections(X, k, s)
 
-
-
-    return .0
+    # Obtain the maximum correlation coefficients over the projections
+    return canonical_correlation_analysis(fx, fy)
 
 def correlationM(M: list[list[float]]) -> list[list[float]]:
     '''
