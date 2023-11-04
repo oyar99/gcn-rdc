@@ -125,4 +125,7 @@ def correlation_numpy(M: np.ndarray) -> np.ndarray:
     return np.round(np.apply_along_axis(dcorrelation_inner, 1, M), 4)
 
 def signed_correlation_numpy(M: np.ndarray) -> np.ndarray:
-    pass
+    C = correlation_numpy(M)
+    P = pearson.correlation_numpy(M)
+
+    return np.multiply(C, np.sign(P))

@@ -8,9 +8,9 @@
             "program": "${file}",
             "args": [
                 "--input", 
-                "dataset/LiverFemale100.csv",
+                "dataset/sample.csv",
                 "--correlation",
-                "distance",
+                "rdc",
                 "--performance"
             ]
         }

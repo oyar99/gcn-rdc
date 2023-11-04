@@ -1,5 +1,6 @@
 from typing import Callable
 from sklearn.cross_decomposition import CCA
+from scipy import stats
 import src.coexpression.pearson.pearson as pearson
 import numpy as np
 import math
@@ -207,6 +208,74 @@ def correlationM(M: list[list[float]]) -> list[list[float]]:
 '''
 Numpy Based Implementation
 '''
-
 def correlation_numpy(M: np.ndarray) -> np.ndarray:
-    pass
+    # Pre-compute all copula-transformations for each row
+    X = np.apply_along_axis(copulas_numpy, 1, M)
+
+    dcorrelation_inner = lambda Y : np.apply_along_axis(rdc_numpy, 1, X, Y)
+
+    return np.round(np.apply_along_axis(dcorrelation_inner, 1, X), 4)
+
+def rdc_numpy(X: np.ndarray, Y: np.ndarray) -> float:
+    '''
+    Given the copula transformations of X and Y, project them with non-linear functions
+    and use canonical correlation analysis to get the correlation between the original
+    vectors X and Y
+    '''
+    n = len(X)
+    # Let T denote a constant number of times we will compute the randomized dependence coefficient for stability
+    T = 5
+    # Let K denote the number of random number projections used
+    K = 4
+    # Let S denote the variance of the normal distribution used for the random number projections
+    S = 0.15
+
+    A = []
+
+    for _ in range(T):
+        x = X[:, np.newaxis]
+        Wx = random_normal_dist_numpy(K, S).reshape(1, K)
+        Bx = random_uniform_dist_numpy(K).reshape(1, K)
+
+        Xw = np.add(np.dot(x, Wx), np.repeat(Bx, n, axis=0))
+        fx = np.concatenate((np.cos(Xw), np.sin(Xw)), axis=1)
+
+        y = Y[:, np.newaxis]
+        Wy = random_normal_dist_numpy(K, S).reshape(1, K)
+        By = random_uniform_dist_numpy(K).reshape(1, K)
+
+        Yw = np.add(np.dot(y, Wy), np.repeat(By, n, axis=0))
+        fy = np.concatenate((np.cos(Yw), np.sin(Yw)), axis=1)
+
+        corr = round(canonical_correlation_analysis_numpy(fx, fy), 4)
+
+        A.append(corr)
+
+    return np.median(np.array([A]))
+
+def copulas_numpy(X: np.ndarray) -> np.ndarray:
+    ranks = np.add(X.argsort().argsort(), 1)
+    
+    return np.multiply(ranks, 1/float(X.shape[0]))
+
+def random_normal_dist_numpy(n: int, s: float) -> np.ndarray:
+    '''
+    Generates a random sample of n values from the normal distribution with mean 0 and variance s
+    '''
+    return np.random.normal(0, s, n)
+
+def random_uniform_dist_numpy(n: int) -> np.ndarray:
+    '''
+    Generates a random sample of n values from a uniform distribution in the interval [-PI, PI)
+    '''
+    return np.random.uniform(-math.pi, math.pi, n)
+
+def canonical_correlation_analysis_numpy(X: np.ndarray, Y: np.ndarray) -> float:
+    cca = CCA(n_components=1)
+    cca.fit(X, Y)
+
+    X_corr, Y_corr = cca.transform(X, Y)
+
+    corr, _ = stats.pearsonr(np.hstack(X_corr), np.hstack(Y_corr))
+
+    return corr
