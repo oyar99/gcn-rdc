@@ -22,6 +22,8 @@ The `dataset` folder contains the following resources.
 
 - `sample.csv` A sample random gene expression matrix of small size
 
+- `LiverFemale3600.csv` A gene expression matrix of real experiments on mouse livers
+
 ## Results
 
 Results are placed in the `results` folder. For each dataset, there will be another folder containing all the following files.

@@ -1,4 +1,6 @@
 from typing import Callable
+from sklearn.cross_decomposition import CCA
+import src.coexpression.pearson.pearson as pearson
 import numpy as np
 import math
 
@@ -137,7 +139,17 @@ def random_nonlinear_projections(A: list[float], k: int, s: float) -> list[list[
         apply_non_linear_function(XW_B, math.sin), k)
 
 def canonical_correlation_analysis(X: list[list[float]], Y: list[list[float]]) -> float:
-    pass
+    cca = CCA(n_components=1)
+    cca.fit(X, Y)
+
+    X_corr, Y_corr = cca.transform(X, Y)
+    X_corr = np.hstack(X_corr).tolist()
+    Y_corr = np.hstack(Y_corr).tolist()
+
+    X_corr_mean = pearson.mean(X_corr)
+    Y_corr_mean = pearson.mean(Y_corr)
+
+    return pearson.correlation(X_corr, Y_corr, pearson.std(X_corr, X_corr_mean), pearson.std(Y_corr, Y_corr_mean), X_corr_mean, Y_corr_mean)
 
 def correlation(X: list[float], Y: list[float], k: int, s: float) -> float:
     '''
