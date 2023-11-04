@@ -32,7 +32,11 @@ The `dataset` folder contains the following resources.
 
 - `sample.csv` A sample random gene expression matrix of small size
 
-- `LiverFemale3600.csv` A gene expression matrix of real experiments on mouse livers
+- `LiverFemale3600.csv` A gene expression matrix of real experiments on mouse livers with 3600 genes
+
+- `LiverFemale620.csv` A gene expression matrix of real experiments on mouse livers with 620 genes
+
+- `LiverFemale100.csv` A gene expression matrix of real experiments on mouse livers with 100 genes
 
 ## Results
 
