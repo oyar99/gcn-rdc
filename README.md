@@ -12,9 +12,19 @@ In practice, researchers use either Pearson correlation or Spearman correlation.
 
 Given two vectors $X$ and $Y$ of length $n$, distance correlation between $X$ and $Y$ can be computed in $O(n^2)$ following its definition. This might be time-consuming for large experiments since building the network would take $O(m^2n^2)$.
 
-We present an implementation of _GCN_ construction based on [The Randomized Dependence Coefficient](https://arxiv.org/abs/1304.7717). This is a measure of non-linear dependence between two variables that can be computed in $O(nlgn)$ for vectors of length $n$. Since the time complexity is dominated by the computation of the copula-transformations discussed in the paper, we can pre-compute all transformations for all genes and obtain an algorithm of the order of  $O(mlgn+m^2n) = O(m^2n)$ for gene coexpression networks that captures as significant biological information as other methods based on our empirical experiments. 
+We present an implementation of _GCN_ construction based on [The Randomized Dependence Coefficient - RDC](https://arxiv.org/abs/1304.7717). This is a measure of non-linear dependence between two variables that can be computed in $O(nlgn)$ for vectors of length $n$. Since the time complexity is dominated by the computation of the copula-transformations discussed in the paper, we can pre-compute all transformations for all genes and obtain an algorithm of the order of  $O(mlgn+m^2n) = O(m^2n)$ for gene coexpression networks that captures as significant biological information as other methods based on our empirical experiments.
 
 This software was implemented with [Python 3.9](https://www.python.org/downloads/release/python-390/).
+
+## Summary
+
+The following table summarizes the time complexities for different correlations.
+
+|   Correlation Measure | Correlation between two variables of length n | Gene Coexpression Network Construction
+|   ------------------- | --------------------------------------------- | --------------------------------------
+|   Pearson             | $O(n)$                                        | $O(m^2n)$
+|   Distance            | $O(n^2)$                                      | $O(m^2n^2)$
+|   RDC                 | $O(nlgn)$                                     | $O(mnlgn + m^2n)$
 
 ## Dataset
 
@@ -99,4 +109,4 @@ Other optional parameters are
 
 - `--analysis` will output a set of files that can be used for further analysis. See results section for more details.
 - `--threshold` can be used to change the value used to determine whether two genes are connected. It should be a value between 0 and 1.
-- `--performance` whether to use the numpy-based implementation for higher performance
+- `--performance` whether to use the numpy-based implementation for better performance - The default implementation uses Python lists, which are known to be slow. Numpy, on the other hand, is a very high tuned C-based implementation.

@@ -20,7 +20,7 @@ def get_args():
                         ''')
     parser.add_argument('--p', '--performance', action=argparse.BooleanOptionalAction, help=
                         '''
-                        whether to use a high performance implementation for correlation measures that heavily use numpy
+                        whether to use a high performance implementation for correlation measures that heavily uses numpy
                         ''')
 
     requiredNamedArgs = parser.add_argument_group('required named arguments')

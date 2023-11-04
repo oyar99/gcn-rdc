@@ -13,6 +13,7 @@ def read_coexpression_file_as_csv(filepath: str) -> [list[list[float]], list[str
     cols = list(pd.read_csv(filepath, nrows=1))
 
     df = pd.read_csv(filepath, usecols=[i for i in cols if i not in drop_cols])
+    df.fillna(0, inplace=True)
 
     if len(df.columns) == 0:
         return [[], []]

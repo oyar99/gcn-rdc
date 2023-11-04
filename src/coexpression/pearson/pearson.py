@@ -63,6 +63,5 @@ def correlationM(M: list[list[float]]) -> list[list[float]]:
 '''
 Numpy Based Implementation
 '''
-
 def correlation_numpy(M: np.ndarray) -> np.ndarray:
-    pass
+    return np.round(np.corrcoef(M), 4)

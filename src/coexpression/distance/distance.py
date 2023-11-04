@@ -1,4 +1,5 @@
 import numpy as np
+from dcor import distance_correlation as dcorrelation
 import src.coexpression.pearson.pearson as pearson
 
 def pairwise_distances(X: list[float]) -> list[list[float]]:
@@ -118,9 +119,10 @@ def correlationM(M: list[list[float]]) -> float:
 '''
 Numpy Based Implementation
 '''
-
 def correlation_numpy(M: np.ndarray) -> np.ndarray:
-    pass
+    dcorrelation_inner = lambda X : np.apply_along_axis(dcorrelation, 1, M, X)
+
+    return np.round(np.apply_along_axis(dcorrelation_inner, 1, M), 4)
 
 def signed_correlation_numpy(M: np.ndarray) -> np.ndarray:
     pass

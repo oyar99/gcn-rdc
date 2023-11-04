@@ -10,7 +10,8 @@
                 "--input", 
                 "dataset/LiverFemale100.csv",
                 "--correlation",
-                "rdc"
+                "distance",
+                "--performance"
             ]
         }
     ]
