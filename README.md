@@ -101,7 +101,7 @@ pip install -r requirements.txt
 - Run the program
 
 ```sh
-python .\index.py --input dataset/sample.csv --correlation pearson --analysis
+python .\index.py --input dataset/sample.csv --correlation pearson --analysis --performance
 ```
 
 The program receives the following required parameters:
